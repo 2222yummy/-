@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>한국어 관용어 매칭 퀴즈</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px;
+      color: #eee;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 6px;
+      text-align: center;
+      color: #f0c040;
+      text-shadow: 0 0 12px rgba(240,192,64,0.5);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #aac4e8;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    /* Score bar */
+    .score-bar {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 10px 24px;
+      margin-bottom: 24px;
+      font-size: 1rem;
+    }
+    .score-bar span { color: #f0c040; font-weight: bold; }
+
+    /* Quiz grid */
+    .quiz-wrapper {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .column-title {
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7fb3e8;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1.5;
+      text-align: center;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
+      user-select: none;
+    }
+    .card:hover:not(.matched):not(.wrong-flash) {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(120,180,255,0.6);
+      transform: translateY(-2px);
+    }
+    .card.selected {
+      background: rgba(100,160,255,0.25);
+      border-color: #64a0ff;
+      box-shadow: 0 0 12px rgba(100,160,255,0.4);
+    }
+    .card.matched {
+      background: rgba(50,200,120,0.18);
+      border-color: #32c878;
+      cursor: default;
+      opacity: 0.75;
+    }
+    .card.wrong-flash {
+      background: rgba(255,80,80,0.25);
+      border-color: #ff5050;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-reset  { background: #f0c040; color: #1a1a2e; }
+    .btn-hint   { background: #4e8cff; color: #fff; }
+
+    /* Finish overlay */
+    #finish-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    #finish-overlay.show { display: flex; }
+    .finish-box {
+      background: #16213e;
+      border: 2px solid #f0c040;
+      border-radius: 20px;
+      padding: 40px 48px;
+      text-align: center;
+      max-width: 420px;
+    }
+    .finish-box h2 { font-size: 2rem; color: #f0c040; margin-bottom: 10px; }
+    .finish-box p  { color: #aac4e8; margin-bottom: 20px; font-size: 1.05rem; }
+    .finish-box button { background: #f0c040; color: #1a1a2e; }
+
+    /* Hint popup */
+    #hint-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #0f3460;
+      border: 1px solid #4e8cff;
+      border-radius: 12px;
+      padding: 12px 24px;
+      color: #cde;
+      font-size: 0.95rem;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 200;
+      text-align: center;
+      max-width: 340px;
+    }
+    #hint-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      .columns { grid-template-columns: 1fr; }
+      h1 { font-size: 1.5rem; }
+      .card { font-size: 0.92rem; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>한국어 관용어 매칭 퀴즈</h1>
+<p class="subtitle">관용어와 뜻을 올바르게 연결해 보세요!</p>
+
+<div class="score-bar">
+  정답: <span id="score">0</span> / 20 &nbsp;|&nbsp;
+  오답: <span id="wrong">0</span> &nbsp;|&nbsp;
+  남은 문제: <span id="remain">20</span>
+</div>
+
+<div class="quiz-wrapper">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px;">
+    <div class="column-title">관용어</div>
+    <div class="column-title">뜻</div>
+  </div>
+  <div class="columns" id="idiom-col"></div>
+  <div class="columns" id="meaning-col" style="margin-top:0"></div>
+</div>
+
+<div class="btn-row">
+  <button class="btn-hint" onclick="showHint()">힌트 보기</button>
+  <button class="btn-reset" onclick="resetQuiz()">다시 시작</button>
+</div>
+
+<div id="finish-overlay">
+  <div class="finish-box">
+    <h2>퀴즈 완료!</h2>
+    <p id="finish-msg"></p>
+    <button onclick="resetQuiz()">다시 도전하기</button>
+  </div>
+</div>
+
+<div id="hint-toast"></div>
+
+<script>
+const DATA = [
+  { idiom: "발이 넓다",          meaning: "아는 사람이 많아 인맥이 넓다" },
+  { idiom: "눈이 높다",          meaning: "기준이 까다로워 웬만한 것엔 만족하지 못한다" },
+  { idiom: "귀가 얇다",          meaning: "남의 말에 쉽게 흔들려 설득당한다" },
+  { idiom: "입이 무겁다",        meaning: "비밀을 잘 지키고 말이 적다" },
+  { idiom: "손이 크다",          meaning: "씀씀이가 넉넉하고 후하다" },
+  { idiom: "발등에 불이 떨어지다", meaning: "일이 매우 급하게 눈앞에 닥쳐오다" },
+  { idiom: "눈코 뜰 새 없다",    meaning: "몹시 바빠서 다른 일을 할 겨를이 없다" },
+  { idiom: "입에 침이 마르다",   meaning: "칭찬이나 좋은 말을 계속해서 아끼지 않다" },
+  { idiom: "손을 씻다",          meaning: "하던 일이나 관계에서 깨끗이 물러나다" },
+  { idiom: "발 벗고 나서다",     meaning: "적극적으로 나서서 도와주다" },
+  { idiom: "귀에 못이 박히다",   meaning: "같은 말을 너무 여러 번 들어 지겹다" },
+  { idiom: "머리를 식히다",      meaning: "잠시 쉬면서 복잡한 마음을 진정시키다" },
+  { idiom: "눈에 불을 켜다",     meaning: "무언가를 찾거나 노리며 매우 집중하다" },
+  { idiom: "배가 아프다",        meaning: "남이 잘 되는 것이 샘나고 시기가 난다" },
+  { idiom: "등을 돌리다",        meaning: "관계나 인연을 끊고 외면하다" },
+  { idiom: "코가 납작해지다",    meaning: "크게 창피를 당하거나 망신을 당하다" },
+  { idiom: "뒤통수를 치다",      meaning: "믿고 있던 사람에게 뜻밖의 배신을 당하다" },
+  { idiom: "손발이 맞다",        meaning: "서로 호흡이 잘 맞아 협력이 잘 된다" },
+  { idiom: "가슴이 뜨겁다",      meaning: "감동이나 뜨거운 열정이 가득 차오르다" },
+  { idiom: "발을 끊다",          meaning: "어떤 곳에 드나들기를 완전히 그만두다" },
+];
+
+// ── State ──────────────────────────────────────────────────────────────────
+let shuffledIdioms   = [];
+let shuffledMeanings = [];
+let selectedIdiom    = null;   // { el, idx }
+let selectedMeaning  = null;   // { el, idx }
+let matched          = new Set();
+let score = 0, wrong = 0;
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function updateScore() {
+  document.getElementById('score').textContent  = score;
+  document.getElementById('wrong').textContent  = wrong;
+  document.getElementById('remain').textContent = DATA.length - matched.size;
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function buildColumns() {
+  shuffledIdioms   = shuffle(DATA.map((_, i) => i));
+  shuffledMeanings = shuffle(DATA.map((_, i) => i));
+
+  const idiomCol   = document.getElementById('idiom-col');
+  const meaningCol = document.getElementById('meaning-col');
+  idiomCol.innerHTML = '';
+  meaningCol.innerHTML = '';
+
+  // render both columns with same number of rows, side-by-side per row
+  // We use two separate columns rendered inside the same grid
+  shuffledIdioms.forEach((dataIdx, pos) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.textContent = DATA[dataIdx].idiom;
+    el.dataset.idx = dataIdx;
+    el.dataset.pos = pos;
+    el.addEventListener('click', () => onIdiomClick(el, dataIdx));
+    idiomCol.appendChild(el);
+  });
+
+  shuffledMeanings.forEach((dataIdx, pos) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.textContent = DATA[dataIdx].meaning;
+    el.dataset.idx = dataIdx;
+    el.dataset.pos = pos;
+    el.addEventListener('click', () => onMeaningClick(el, dataIdx));
+    meaningCol.appendChild(el);
+  });
+}
+
+// We want idiom and meaning cards to sit in the same visual row.
+// Simplest approach: render one combined grid with idiom | meaning per row.
+function buildGrid() {
+  shuffledIdioms   = shuffle(DATA.map((_, i) => i));
+  shuffledMeanings = shuffle(DATA.map((_, i) => i));
+  matched          = new Set();
+  score = 0; wrong = 0;
+  selectedIdiom = null; selectedMeaning = null;
+  updateScore();
+
+  const container = document.querySelector('.quiz-wrapper');
+  // Remove old grid if present
+  const old = document.getElementById('main-grid');
+  if (old) old.remove();
+
+  const grid = document.createElement('div');
+  grid.id = 'main-grid';
+  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;';
+
+  shuffledIdioms.forEach((dataIdx) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.textContent = DATA[dataIdx].idiom;
+    el.dataset.idx = dataIdx;
+    el.dataset.type = 'idiom';
+    el.addEventListener('click', () => onIdiomClick(el, dataIdx));
+    grid.appendChild(el);
+
+    // placeholder — filled below
+    el._gridPos = grid.children.length - 1;
+  });
+
+  container.appendChild(grid);
+
+  // Build separate meaning cards array for separate shuffled column
+  // Actually: let's just do two separate arrays side-by-side
+  // Rebuild: interleave idiom[i] and meaning[i] so they share a row
+  grid.innerHTML = '';
+
+  for (let i = 0; i < DATA.length; i++) {
+    const iIdx = shuffledIdioms[i];
+    const mIdx = shuffledMeanings[i];
+
+    const iEl = document.createElement('div');
+    iEl.className = 'card';
+    iEl.textContent = DATA[iIdx].idiom;
+    iEl.dataset.idx = iIdx;
+    iEl.dataset.type = 'idiom';
+    iEl.addEventListener('click', () => onIdiomClick(iEl, iIdx));
+
+    const mEl = document.createElement('div');
+    mEl.className = 'card';
+    mEl.textContent = DATA[mIdx].meaning;
+    mEl.dataset.idx = mIdx;
+    mEl.dataset.type = 'meaning';
+    mEl.addEventListener('click', () => onMeaningClick(mEl, mIdx));
+
+    grid.appendChild(iEl);
+    grid.appendChild(mEl);
+  }
+
+  // hide the old placeholder columns
+  document.getElementById('idiom-col').style.display   = 'none';
+  document.getElementById('meaning-col').style.display = 'none';
+  document.querySelector('.columns').style.display     = 'none';
+}
+
+// ── Click handlers ─────────────────────────────────────────────────────────
+function onIdiomClick(el, idx) {
+  if (matched.has(idx)) return;
+  if (selectedIdiom?.el === el) {
+    el.classList.remove('selected');
+    selectedIdiom = null;
+    return;
+  }
+  if (selectedIdiom) selectedIdiom.el.classList.remove('selected');
+  selectedIdiom = { el, idx };
+  el.classList.add('selected');
+  tryMatch();
+}
+
+function onMeaningClick(el, idx) {
+  if (matched.has(idx)) return;
+  if (selectedMeaning?.el === el) {
+    el.classList.remove('selected');
+    selectedMeaning = null;
+    return;
+  }
+  if (selectedMeaning) selectedMeaning.el.classList.remove('selected');
+  selectedMeaning = { el, idx };
+  el.classList.add('selected');
+  tryMatch();
+}
+
+function tryMatch() {
+  if (!selectedIdiom || !selectedMeaning) return;
+
+  const iIdx = selectedIdiom.idx;
+  const mIdx = selectedMeaning.idx;
+
+  if (iIdx === mIdx) {
+    // Correct!
+    selectedIdiom.el.classList.remove('selected');
+    selectedMeaning.el.classList.remove('selected');
+    selectedIdiom.el.classList.add('matched');
+    selectedMeaning.el.classList.add('matched');
+    matched.add(iIdx);
+    score++;
+    selectedIdiom   = null;
+    selectedMeaning = null;
+    updateScore();
+    if (matched.size === DATA.length) setTimeout(showFinish, 400);
+  } else {
+    // Wrong
+    const iEl = selectedIdiom.el;
+    const mEl = selectedMeaning.el;
+    iEl.classList.remove('selected');
+    mEl.classList.remove('selected');
+    iEl.classList.add('wrong-flash');
+    mEl.classList.add('wrong-flash');
+    wrong++;
+    selectedIdiom   = null;
+    selectedMeaning = null;
+    updateScore();
+    setTimeout(() => {
+      iEl.classList.remove('wrong-flash');
+      mEl.classList.remove('wrong-flash');
+    }, 450);
+  }
+}
+
+// ── Hint ───────────────────────────────────────────────────────────────────
+function showHint() {
+  const remaining = DATA.filter((_, i) => !matched.has(i));
+  if (remaining.length === 0) return;
+  const pick = remaining[Math.floor(Math.random() * remaining.length)];
+  showToast(`💡 "${pick.idiom}" → ${pick.meaning}`);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('hint-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── Finish ─────────────────────────────────────────────────────────────────
+function showFinish() {
+  const pct = Math.round((score / (score + wrong)) * 100) || 100;
+  let msg = '';
+  if (wrong === 0)      msg = '완벽해요! 오답 없이 모두 맞혔어요! 🎉';
+  else if (pct >= 80)   msg = `오답 ${wrong}번으로 완료! 훌륭한 실력이에요! 👏`;
+  else if (pct >= 60)   msg = `오답 ${wrong}번으로 완료! 조금 더 연습해 봐요! 📚`;
+  else                   msg = `오답 ${wrong}번으로 완료! 관용어를 복습해 봐요! 💪`;
+  document.getElementById('finish-msg').textContent = msg;
+  document.getElementById('finish-overlay').classList.add('show');
+}
+
+// ── Reset ──────────────────────────────────────────────────────────────────
+function resetQuiz() {
+  document.getElementById('finish-overlay').classList.remove('show');
+  matched = new Set();
+  score = 0; wrong = 0;
+  selectedIdiom = null; selectedMeaning = null;
+  updateScore();
+
+  const old = document.getElementById('main-grid');
+  if (old) old.remove();
+  buildGrid();
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+buildGrid();
+</script>
+</body>
+</html>
