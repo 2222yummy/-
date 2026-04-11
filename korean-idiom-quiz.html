@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관용어 그림 퀴즈 🎨</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 620px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      padding: 24px 32px;
+      text-align: center;
+      color: white;
+    }
+    .header h1 { font-size: 1.7rem; margin-bottom: 6px; text-shadow: 1px 2px 4px rgba(0,0,0,.2); }
+    .header p  { font-size: 0.95rem; opacity: .9; }
+
+    .progress-bar-wrap { padding: 16px 32px 0; }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #e9ecef;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f093fb, #f5576c);
+      border-radius: 6px;
+      transition: width .4s ease;
+    }
+
+    .question-area { padding: 24px 32px 0; }
+    .question-number {
+      font-size: 0.8rem;
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #2d3436;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .illustration {
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 24px;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .options {
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .option-btn {
+      background: #f8f9fa;
+      border: 2.5px solid #e9ecef;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #2d3436;
+      cursor: pointer;
+      text-align: center;
+      transition: all .2s;
+      line-height: 1.4;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: #f5576c;
+      background: #fff5f5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245,87,108,.2);
+    }
+    .option-btn.correct  { background: #d4edda; border-color: #28a745; color: #155724; }
+    .option-btn.wrong    { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+    .option-btn:disabled { cursor: default; transform: none; }
+
+    .feedback {
+      margin: 0 32px 20px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct-fb { background: #d4edda; color: #155724; }
+    .feedback.wrong-fb   { background: #f8d7da; color: #721c24; }
+
+    .next-btn {
+      display: none;
+      margin: 0 32px 28px;
+      width: calc(100% - 64px);
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    .next-btn:hover { opacity: .9; transform: translateY(-2px); }
+    .next-btn.show  { display: block; }
+
+    .result-screen {
+      display: none;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .result-screen.show { display: block; }
+    .result-emoji  { font-size: 6rem; margin-bottom: 16px; }
+    .result-title  { font-size: 2rem; font-weight: 800; color: #2d3436; margin-bottom: 8px; }
+    .result-score  { font-size: 1.2rem; color: #666; margin-bottom: 24px; }
+    .result-grade  {
+      display: inline-block;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      padding: 10px 28px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+    .review-title { font-size: 1rem; font-weight: 700; color: #2d3436; margin-bottom: 12px; }
+    .review-list  { text-align: left; margin-bottom: 28px; }
+    .review-item  {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .review-item.ok   { background: #d4edda; color: #155724; }
+    .review-item.bad  { background: #f8d7da; color: #721c24; }
+    .restart-btn {
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .restart-btn:hover { opacity: .9; }
+  </style>
+</head>
+<body>
+<div class="quiz-container">
+
+  <div class="header">
+    <h1>🎨 관용어 그림 퀴즈</h1>
+    <p>그림을 보고 어떤 관용어인지 맞혀보세요! (초등 6학년)</p>
+  </div>
+
+  <div id="quizBody">
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span id="progressText">1 / 10</span>
+        <span id="scoreText">점수: 0점</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:10%"></div>
+      </div>
+    </div>
+
+    <div class="question-area">
+      <div class="question-number" id="questionNumber">문제 1</div>
+      <div class="question-text" id="questionText"></div>
+      <div class="illustration" id="illustration"></div>
+    </div>
+
+    <div class="options" id="optionsArea"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">다음 문제 →</button>
+  </div>
+
+  <div class="result-screen" id="resultScreen">
+    <div class="result-emoji" id="resultEmoji"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-score" id="resultScore"></div>
+    <div class="result-grade" id="resultGrade"></div>
+    <div class="review-title">📋 정답 확인</div>
+    <div class="review-list" id="reviewList"></div>
+    <button class="restart-btn" onclick="restart()">🔄 다시 도전하기</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  /* ① 발이 넓다 : 발(👣) + 넓다(↔️) */
+  {
+    idiom: "발이 넓다",
+    meaning: "아는 사람이 많고 사귀는 범위가 넓다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <span style="font-size:5.5rem;display:block;margin-bottom:10px">👣</span>
+        <div style="display:flex;align-items:center;justify-content:center;gap:2px;font-size:2.8rem">
+          ⬅️↔️↔️↔️➡️
+        </div>
+      </div>`,
+    options: ["발이 넓다", "발이 빠르다", "발이 크다", "발이 묶이다"],
+    answer: 0
+  },
+
+  /* ② 손이 크다 : 손(✋) + 크다(크기 비교) */
+  {
+    idiom: "손이 크다",
+    meaning: "씀씀이가 후하고 물건을 아끼지 않는다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:flex-end;justify-content:center;gap:32px">
+          <span style="font-size:2.5rem;opacity:0.5">✋</span>
+          <span style="font-size:7.5rem">✋</span>
+        </div>
+      </div>`,
+    options: ["손이 크다", "손을 씻다", "손이 빠르다", "손이 많다"],
+    answer: 0
+  },
+
+  /* ③ 눈이 높다 : 눈(👁️) + 높다(⬆️ 높은 위치) */
+  {
+    idiom: "눈이 높다",
+    meaning: "기준이나 눈높이가 까다로워 마음에 드는 것이 없다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:center;justify-content:center;gap:20px">
+          <!-- 눈 emoji at the very top of a tall pole -->
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <span style="font-size:4rem">👁️</span>
+            <div style="width:6px;height:70px;background:linear-gradient(to bottom,#fdcb6e,#b2bec3);border-radius:3px"></div>
+            <div style="width:36px;height:6px;background:#b2bec3;border-radius:3px"></div>
+          </div>
+          <!-- arrows showing height -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:2rem">
+            <span>⬆️</span>
+            <span>⬆️</span>
+            <span>⬆️</span>
+          </div>
+        </div>
+      </div>`,
+    options: ["눈이 낮다", "눈이 높다", "눈이 빠르다", "눈이 좋다"],
+    answer: 1
+  },
+
+  /* ④ 귀가 얇다 : 귀(👂) + 얇다(얇은막대 vs 두꺼운막대) */
+  {
+    idiom: "귀가 얇다",
+    meaning: "남의 말을 쉽게 믿고 금방 따라한다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:center;justify-content:center;gap:36px">
+          <!-- 얇다: thin bar + ear -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+            <div style="width:5px;height:65px;background:#e17055;border-radius:3px"></div>
+            <span style="font-size:3rem">👂</span>
+          </div>
+          <!-- 두껍다: thick bar + ear (비교) -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0.35">
+            <div style="width:36px;height:65px;background:#0984e3;border-radius:8px"></div>
+            <span style="font-size:3rem">👂</span>
+          </div>
+        </div>
+      </div>`,
+    options: ["귀가 밝다", "귀가 크다", "귀가 얇다", "귀가 멀다"],
+    answer: 2
+  },
+
+  /* ⑤ 입이 무겁다 : 입(👄) + 무겁다(🏋️ 아래로) */
+  {
+    idiom: "입이 무겁다",
+    meaning: "비밀을 잘 지키고 쉽게 말하지 않는다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <span style="font-size:5rem">👄</span>
+          <span style="font-size:2.2rem">⬇️⬇️</span>
+          <span style="font-size:5rem">🏋️</span>
+        </div>
+      </div>`,
+    options: ["입이 짧다", "입이 가볍다", "입이 무겁다", "입이 넓다"],
+    answer: 2
+  },
+
+  /* ⑥ 배가 아프다 : 배(🫃 배 부위) + 아프다(⚡💢) */
+  {
+    idiom: "배가 아프다",
+    meaning: "남이 잘되는 것을 보고 샘이 나서 심술이 난다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <span style="font-size:5rem;display:block">🧑</span>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:-4px">
+            <span style="font-size:2.2rem">⚡</span>
+            <div style="width:42px;height:42px;background:rgba(231,76,60,0.15);
+                        border:3px solid #e74c3c;border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;font-size:1.5rem">💢</div>
+            <span style="font-size:2.2rem">⚡</span>
+          </div>
+        </div>
+      </div>`,
+    options: ["눈이 뒤집히다", "배가 부르다", "속이 타다", "배가 아프다"],
+    answer: 3
+  },
+
+  /* ⑦ 발이 묶이다 : 발(👣) + 묶이다(⛓️🔒) */
+  {
+    idiom: "발이 묶이다",
+    meaning: "어떤 사정으로 인해 움직이지 못하게 되다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <span style="font-size:5rem">👣</span>
+          <span style="font-size:3.5rem">⛓️</span>
+          <span style="font-size:3rem">🔒</span>
+        </div>
+      </div>`,
+    options: ["발이 빠르다", "발이 묶이다", "발이 넓다", "발이 크다"],
+    answer: 1
+  },
+
+  /* ⑧ 손을 씻다 : 손(🤲) + 씻다(💧💧💧) */
+  {
+    idiom: "손을 씻다",
+    meaning: "지금까지 해 오던 나쁜 일이나 관계를 끊다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px">
+          <span style="font-size:5.5rem">🤲</span>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:2.5rem">
+            <span>💧</span>
+            <span>💧</span>
+            <span>💧</span>
+          </div>
+        </div>
+      </div>`,
+    options: ["손이 크다", "손을 잡다", "손을 씻다", "손이 빠르다"],
+    answer: 2
+  },
+
+  /* ⑨ 귀가 번쩍 뜨이다 : 귀(👂) + 번쩍(⚡✨) */
+  {
+    idiom: "귀가 번쩍 뜨이다",
+    meaning: "어떤 말이나 소리가 관심을 끌어 갑자기 귀가 쏠리다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:3rem">⚡</span>
+          <span style="font-size:6rem">👂</span>
+          <span style="font-size:3rem">⚡</span>
+        </div>
+        <div style="font-size:2.8rem">✨✨✨</div>
+      </div>`,
+    options: ["귀가 멀다", "귀가 얇다", "귀가 번쩍 뜨이다", "귀가 밝다"],
+    answer: 2
+  },
+
+  /* ⑩ 눈에 넣어도 안 아프다 : 👶→👁️ + ❌😣 → ❤️ */
+  {
+    idiom: "눈에 넣어도 안 아프다",
+    meaning: "매우 사랑스럽고 소중하다",
+    hint: "어떤 관용어를 나타내는 그림일까요?",
+    scene: `
+      <div class="scene">
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:4rem">👶</span>
+          <span style="font-size:2.2rem">➡️</span>
+          <span style="font-size:5.5rem">👁️</span>
+          <span style="font-size:2.2rem">➡️</span>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <span style="font-size:2rem;opacity:0.35;text-decoration:line-through">😣</span>
+            <span style="font-size:2.8rem">❤️</span>
+          </div>
+        </div>
+      </div>`,
+    options: ["눈이 높다", "눈에 넣어도 안 아프다", "눈이 빠지다", "눈에 밟히다"],
+    answer: 1
+  }
+];
+
+let current = 0;
+let score   = 0;
+let answers = [];
+
+function render() {
+  const q = questions[current];
+  document.getElementById('questionNumber').textContent = `문제 ${current + 1}`;
+  document.getElementById('questionText').textContent   = q.hint;
+  document.getElementById('illustration').innerHTML     = q.scene;
+  document.getElementById('progressText').textContent   = `${current + 1} / ${questions.length}`;
+  document.getElementById('scoreText').textContent      = `점수: ${score}점`;
+  document.getElementById('progressFill').style.width   = `${((current + 1) / questions.length) * 100}%`;
+
+  const optArea = document.getElementById('optionsArea');
+  optArea.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className   = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick     = () => selectAnswer(idx, q.answer, q.meaning);
+    optArea.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('nextBtn').className   = 'next-btn';
+}
+
+function selectAnswer(chosen, correct, meaning) {
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const fb   = document.getElementById('feedback');
+  const q    = questions[current];
+  const isOk = chosen === correct;
+
+  btns[correct].classList.add('correct');
+  if (!isOk) btns[chosen].classList.add('wrong');
+
+  if (isOk) {
+    score++;
+    fb.textContent = `🎉 정답! "${q.idiom}" = ${meaning}`;
+    fb.className   = 'feedback show correct-fb';
+  } else {
+    fb.textContent = `😅 틀렸어요! 정답은 "${q.idiom}" = ${meaning}`;
+    fb.className   = 'feedback show wrong-fb';
+  }
+
+  answers.push({ idiom: q.idiom, correct: isOk, chosenText: q.options[chosen], meaning });
+  document.getElementById('scoreText').textContent = `점수: ${score}점`;
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) showResult();
+  else render();
+}
+
+function showResult() {
+  document.getElementById('quizBody').style.display = 'none';
+  const rs = document.getElementById('resultScreen');
+  rs.className = 'result-screen show';
+
+  const pct = (score / questions.length) * 100;
+  let emoji, title, grade;
+  if      (pct === 100) { emoji = '🏆'; title = '완벽해요!';     grade = '관용어 달인 🥇'; }
+  else if (pct >= 80)   { emoji = '🎉'; title = '훌륭해요!';     grade = '관용어 고수 🥈'; }
+  else if (pct >= 60)   { emoji = '😊'; title = '잘했어요!';     grade = '관용어 견습 🥉'; }
+  else if (pct >= 40)   { emoji = '📚'; title = '조금 더 공부!'; grade = '관용어 입문 📖'; }
+  else                   { emoji = '💪'; title = '다시 도전!';    grade = '다시 해봐요 🔄'; }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent =
+    `${questions.length}문제 중 ${score}문제 정답 (${pct}점)`;
+  document.getElementById('resultGrade').textContent = grade;
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = answers.map((a, i) =>
+    `<div class="review-item ${a.correct ? 'ok' : 'bad'}">
+      <span>${a.correct ? '✅' : '❌'}</span>
+      <div>
+        <strong>${i+1}. ${a.idiom}</strong><br>
+        <span style="font-size:.82rem">${a.meaning}</span>
+        ${!a.correct ? `<br><span style="font-size:.8rem">내 답: ${a.chosenText}</span>` : ''}
+      </div>
+    </div>`
+  ).join('');
+}
+
+function restart() {
+  current = 0; score = 0; answers = [];
+  document.getElementById('resultScreen').className = 'result-screen';
+  document.getElementById('quizBody').style.display = '';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
