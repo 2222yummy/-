@@ -1,0 +1,1172 @@
+<title>독서 기록판</title>
+<style>
+  :root{
+    --cream:#FBF3E6;
+    --cream-2:#F3E6D2;
+    --ink:#4A3225;
+    --ink-soft:#6E5645;
+    --brown:#9C6B44;
+    --brown-dark:#7A4F2E;
+    --coral:#E2795A;
+    --coral-dark:#C85F42;
+    --pink:#F4B8A8;
+    --yellow:#F4C862;
+    --card:#FFFFFF;
+    --line:#E7D8C2;
+    --good:#7BA684;
+    --shadow: 0 6px 0 rgba(74,50,37,0.12);
+  }
+  :root[data-theme="dark"]{
+    --cream:#241C16;
+    --cream-2:#2E241C;
+    --ink:#F3E6D5;
+    --ink-soft:#D2BFA9;
+    --brown:#C89468;
+    --brown-dark:#E0AC7C;
+    --coral:#F0906E;
+    --coral-dark:#F4A483;
+    --pink:#C77E6E;
+    --yellow:#E8BE63;
+    --card:#2E241C;
+    --line:#4A3A2C;
+    --good:#8FBF97;
+    --shadow: 0 6px 0 rgba(0,0,0,0.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#241C16;
+      --cream-2:#2E241C;
+      --ink:#F3E6D5;
+      --ink-soft:#D2BFA9;
+      --brown:#C89468;
+      --brown-dark:#E0AC7C;
+      --coral:#F0906E;
+      --coral-dark:#F4A483;
+      --pink:#C77E6E;
+      --yellow:#E8BE63;
+      --card:#2E241C;
+      --line:#4A3A2C;
+      --good:#8FBF97;
+      --shadow: 0 6px 0 rgba(0,0,0,0.35);
+    }
+  }
+
+  @font-face{
+    font-family:'Jua';
+    font-style:normal;
+    font-weight:400;
+    font-display:swap;
+    src: url("data:font/woff2;base64,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") format('woff2');
+  }
+
+  *{box-sizing:border-box;}
+  html{font-size:115%;} /* 기본보다 15% 큰 글씨 */
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(var(--line) 1.2px, transparent 1.2px) 0 0/22px 22px,
+      var(--cream);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .t-display{
+    font-family:'Jua','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+  }
+  h1,h2,h3{ text-wrap:balance; margin:0; }
+  button{ font-family:inherit; }
+  input,textarea,select{ font-family:inherit; font-size:1rem; }
+  ::selection{ background:var(--yellow); color:var(--ink); }
+
+  .screen{ display:none; min-height:100vh; }
+  .screen.active{ display:block; }
+
+  /* ---------- Login screen ---------- */
+  #loginScreen.active{ display:flex; align-items:center; justify-content:center; padding:2rem 1rem; }
+  .login-card{
+    width:100%; max-width:30rem;
+    background:var(--card);
+    border:2px solid var(--line);
+    border-radius:1.75rem;
+    box-shadow:var(--shadow);
+    padding:2.25rem 2rem 2rem;
+    position:relative;
+    overflow:visible;
+  }
+  .login-illust{
+    position:absolute;
+    width:5.2rem; height:5.2rem;
+    filter:drop-shadow(0 3px 0 rgba(74,50,37,0.15));
+  }
+  .login-illust.cap-a{ top:-2.6rem; left:-1.8rem; transform:rotate(-8deg); }
+  .login-illust.cap-b{ bottom:-2.2rem; right:-2rem; transform:rotate(6deg); }
+  .sparkle{ position:absolute; color:var(--yellow); }
+  .badge{
+    display:inline-flex; align-items:center; gap:0.35rem;
+    background:var(--coral); color:#fff;
+    padding:0.35rem 0.9rem;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:700;
+    letter-spacing:0.04em;
+  }
+  .login-title{
+    font-size:2.4rem;
+    color:var(--brown-dark);
+    margin:0.7rem 0 0.2rem;
+  }
+  .login-sub{ color:var(--ink-soft); margin-bottom:1.6rem; font-size:0.95rem; }
+
+  .role-toggle{
+    display:flex; gap:0.5rem; margin-bottom:1.25rem;
+    background:var(--cream-2); padding:0.3rem; border-radius:0.9rem;
+  }
+  .role-toggle button{
+    flex:1; border:none; background:transparent; padding:0.6rem 0.5rem;
+    border-radius:0.65rem; cursor:pointer; color:var(--ink-soft); font-weight:700;
+    transition:background .15s, color .15s;
+  }
+  .role-toggle button.active{ background:var(--coral); color:#fff; }
+
+  .field{ margin-bottom:1rem; }
+  .field label{ display:block; font-size:0.85rem; font-weight:700; color:var(--ink-soft); margin-bottom:0.35rem; }
+  .field select, .field input[type="text"], .field input[type="password"]{
+    width:100%; padding:0.75rem 0.9rem;
+    border:2px solid var(--line); border-radius:0.75rem;
+    background:var(--cream); color:var(--ink);
+    outline:none;
+  }
+  .field select:focus, .field input:focus, .field textarea:focus{ border-color:var(--coral); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+    border:none; border-radius:0.85rem; cursor:pointer;
+    font-weight:700; padding:0.8rem 1.2rem; font-size:1rem;
+    transition:transform .1s ease, filter .1s ease;
+  }
+  .btn:active{ transform:translateY(2px); }
+  .btn-primary{ background:var(--coral); color:#fff; box-shadow:0 4px 0 var(--coral-dark); width:100%; }
+  .btn-primary:active{ box-shadow:0 2px 0 var(--coral-dark); }
+  .btn-secondary{ background:var(--cream-2); color:var(--ink); border:2px solid var(--line); }
+  .btn-ghost{ background:transparent; color:var(--ink-soft); border:2px solid var(--line); }
+  .btn-danger{ background:#fff; color:#C0463A; border:2px solid #E3B3AA; }
+  .btn-sm{ padding:0.45rem 0.8rem; font-size:0.85rem; border-radius:0.65rem; }
+
+  .error-msg{ color:#C0463A; font-size:0.85rem; margin-top:-0.4rem; margin-bottom:0.8rem; min-height:1.1em; }
+
+  .setup-note{
+    margin-top:1.25rem; padding-top:1.1rem; border-top:1px dashed var(--line);
+    font-size:0.8rem; color:var(--ink-soft); text-align:center;
+  }
+  .setup-note button{ background:none;border:none;color:var(--coral-dark);font-weight:700;cursor:pointer;padding:0;font-size:0.8rem; text-decoration:underline; }
+
+  /* ---------- App shell ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--cream); border-bottom:2px solid var(--line);
+    padding:0.9rem 1.2rem;
+  }
+  .topbar-inner{ max-width:64rem; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:0.6rem; }
+  .brand-emoji{ font-size:1.6rem; }
+  .brand-text{ font-size:1.35rem; color:var(--brown-dark); font-weight:800; }
+  .who{ display:flex; align-items:center; gap:0.6rem; }
+  .who-name{ font-weight:700; background:var(--cream-2); padding:0.4rem 0.9rem; border-radius:999px; border:2px solid var(--line); }
+
+  .container{ max-width:64rem; margin:0 auto; padding:1.4rem 1.2rem 4rem; }
+
+  .progress-card{
+    background:var(--card); border:2px solid var(--line); border-radius:1.25rem;
+    padding:1.25rem 1.4rem; box-shadow:var(--shadow); margin-bottom:1.4rem;
+    display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;
+  }
+  .progress-num{ font-size:2.1rem; font-variant-numeric:tabular-nums; color:var(--coral-dark); min-width:5.5rem; }
+  .progress-num small{ font-size:1rem; color:var(--ink-soft); font-weight:400; }
+  .progress-track{ flex:1; min-width:10rem; }
+  .progress-label{ font-size:0.85rem; color:var(--ink-soft); margin-bottom:0.4rem; font-weight:700; }
+  .progress-bar-bg{ background:var(--cream-2); border-radius:999px; height:0.9rem; overflow:hidden; border:1px solid var(--line); }
+  .progress-bar-fill{ height:100%; background:linear-gradient(90deg,var(--yellow),var(--coral)); border-radius:999px; transition:width .3s ease; }
+
+  .filter-row{ display:flex; gap:0.5rem; margin-bottom:1.1rem; flex-wrap:wrap; }
+  .filter-row button{
+    border:2px solid var(--line); background:var(--card); color:var(--ink-soft);
+    padding:0.5rem 1rem; border-radius:999px; font-weight:700; cursor:pointer; font-size:0.9rem;
+  }
+  .filter-row button.active{ background:var(--ink); color:var(--cream); border-color:var(--ink); }
+
+  .book-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr)); gap:1rem;
+  }
+  .book-card{
+    background:var(--card); border:2px solid var(--line); border-radius:1rem;
+    padding:0.6rem; cursor:pointer; text-align:left; position:relative;
+    box-shadow:var(--shadow);
+  }
+  .book-card:active{ transform:translateY(2px); box-shadow:none; }
+  .book-cover{
+    width:100%; aspect-ratio:3/4; border-radius:0.6rem; overflow:hidden;
+    background:var(--cream-2); display:flex; align-items:center; justify-content:center;
+    margin-bottom:0.5rem; border:1px solid var(--line);
+  }
+  .book-cover img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .book-cover .ph{ font-size:1.8rem; opacity:0.5; }
+  .book-title{ font-size:0.88rem; font-weight:700; color:var(--ink); line-height:1.3;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .read-check{
+    position:absolute; top:0.7rem; right:0.7rem; width:1.7rem; height:1.7rem;
+    background:var(--good); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:1rem; box-shadow:0 2px 0 rgba(0,0,0,0.15); border:2px solid var(--card);
+  }
+  .empty-state{ text-align:center; padding:3rem 1rem; color:var(--ink-soft); }
+  .empty-state .emoji{ font-size:2.4rem; display:block; margin-bottom:0.6rem; }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    display:none; position:fixed; inset:0; background:rgba(30,20,14,0.45);
+    z-index:50; align-items:flex-end; justify-content:center;
+  }
+  .modal-backdrop.active{ display:flex; }
+  .modal{
+    background:var(--card); width:100%; max-width:34rem;
+    border-radius:1.5rem 1.5rem 0 0; padding:1.5rem; max-height:88vh; overflow-y:auto;
+    border:2px solid var(--line); border-bottom:none;
+  }
+  @media (min-width:640px){
+    .modal-backdrop{ align-items:center; }
+    .modal{ border-radius:1.5rem; border-bottom:2px solid var(--line); }
+  }
+  .modal-head{ display:flex; gap:1rem; margin-bottom:1rem; }
+  .modal-cover{ width:5.5rem; aspect-ratio:3/4; border-radius:0.6rem; overflow:hidden; background:var(--cream-2); flex-shrink:0; border:1px solid var(--line); }
+  .modal-cover img{ width:100%; height:100%; object-fit:cover; }
+  .modal-title{ font-size:1.15rem; font-weight:700; }
+  .modal-close{ margin-left:auto; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--ink-soft); }
+  .check-row{ display:flex; align-items:center; gap:0.6rem; margin:0.9rem 0 1.1rem; }
+  .check-row label{ font-weight:700; cursor:pointer; user-select:none; }
+  .switch{ position:relative; width:3rem; height:1.7rem; flex-shrink:0; }
+  .switch input{ display:none; }
+  .switch .track{ position:absolute; inset:0; background:var(--line); border-radius:999px; transition:background .15s; }
+  .switch .knob{ position:absolute; top:0.2rem; left:0.2rem; width:1.3rem; height:1.3rem; background:#fff; border-radius:50%; transition:transform .15s; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+  .switch input:checked + .track{ background:var(--good); }
+  .switch input:checked + .track .knob{ transform:translateX(1.3rem); }
+  textarea{
+    width:100%; border:2px solid var(--line); border-radius:0.75rem; background:var(--cream);
+    color:var(--ink); padding:0.75rem 0.9rem; resize:vertical; min-height:4.5rem; outline:none;
+  }
+  textarea:focus{ border-color:var(--coral); }
+  .char-count{ text-align:right; font-size:0.75rem; color:var(--ink-soft); margin-top:0.25rem; }
+  .friend-reviews{ margin-top:1.4rem; padding-top:1.1rem; border-top:1px dashed var(--line); }
+  .friend-reviews h4{ font-size:0.95rem; margin-bottom:0.7rem; }
+  .review-item{ display:flex; gap:0.6rem; padding:0.55rem 0; border-bottom:1px solid var(--line); }
+  .review-item:last-child{ border-bottom:none; }
+  .review-avatar{ width:2rem; height:2rem; border-radius:50%; background:var(--pink); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:700; color:#fff; }
+  .review-body .rname{ font-weight:700; font-size:0.85rem; }
+  .review-body .rtext{ font-size:0.9rem; color:var(--ink-soft); }
+  .no-reviews{ font-size:0.85rem; color:var(--ink-soft); font-style:normal; }
+
+  /* ---------- Teacher ---------- */
+  .tabs{ display:flex; gap:0.4rem; margin-bottom:1.3rem; flex-wrap:wrap; border-bottom:2px solid var(--line); }
+  .tabs button{
+    border:none; background:none; padding:0.7rem 1rem; font-weight:700; color:var(--ink-soft);
+    cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; font-size:0.95rem;
+  }
+  .tabs button.active{ color:var(--coral-dark); border-color:var(--coral); }
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+  .section-card{ background:var(--card); border:2px solid var(--line); border-radius:1.25rem; padding:1.3rem; box-shadow:var(--shadow); margin-bottom:1.2rem; }
+  .section-card h3{ font-size:1.25rem; margin-bottom:1rem; color:var(--brown-dark); }
+  .form-row{ display:flex; gap:0.8rem; flex-wrap:wrap; align-items:flex-end; }
+  .form-row .field{ flex:1; min-width:9rem; margin-bottom:0; }
+  .file-drop{
+    border:2px dashed var(--line); border-radius:0.75rem; padding:0.6rem;
+    display:flex; align-items:center; gap:0.7rem; flex:1; min-width:9rem;
+  }
+  .file-drop .preview{ width:2.6rem; height:2.6rem; border-radius:0.4rem; background:var(--cream-2); overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+  .file-drop .preview img{ width:100%; height:100%; object-fit:cover; }
+  .file-drop input[type=file]{ font-size:0.8rem; max-width:100%; }
+
+  table.data-table{ width:100%; border-collapse:collapse; font-size:0.92rem; }
+  table.data-table th, table.data-table td{ text-align:left; padding:0.6rem 0.5rem; border-bottom:1px solid var(--line); }
+  table.data-table th{ color:var(--ink-soft); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.03em; }
+  .row-actions{ display:flex; gap:0.4rem; }
+  .book-row-thumb{ width:2.4rem; height:3.1rem; border-radius:0.3rem; object-fit:cover; background:var(--cream-2); }
+  .list-scroll{ max-height:26rem; overflow-y:auto; }
+
+  .list-item-inline{ display:flex; align-items:center; gap:0.8rem; padding:0.7rem 0.2rem; border-bottom:1px solid var(--line); }
+  .list-item-inline:last-child{ border-bottom:none; }
+  .list-item-inline .grow{ flex:1; }
+  .list-item-inline .name{ font-weight:700; }
+
+  .stat-mini{ display:flex; gap:0.9rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+  .stat-chip{ background:var(--cream-2); border:2px solid var(--line); border-radius:1rem; padding:0.8rem 1.1rem; min-width:8rem; }
+  .stat-chip .n{ font-size:1.5rem; font-weight:700; color:var(--coral-dark); font-variant-numeric:tabular-nums; }
+  .stat-chip .l{ font-size:0.78rem; color:var(--ink-soft); font-weight:700; }
+
+  .backup-actions{ display:flex; gap:0.8rem; flex-wrap:wrap; }
+  .hint{ font-size:0.85rem; color:var(--ink-soft); margin-top:0.6rem; }
+  .toast{
+    position:fixed; bottom:1.4rem; left:50%; transform:translateX(-50%) translateY(1rem);
+    background:var(--ink); color:var(--cream); padding:0.75rem 1.3rem; border-radius:0.8rem;
+    font-weight:700; font-size:0.9rem; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+    z-index:80; box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="screen active" id="loginScreen">
+  <div class="login-card">
+    <svg class="login-illust cap-a" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="50" cy="60" rx="38" ry="30" fill="var(--brown)"/>
+      <ellipse cx="50" cy="66" rx="26" ry="18" fill="var(--cream-2)"/>
+      <ellipse cx="24" cy="34" rx="10" ry="9" fill="var(--brown)"/>
+      <ellipse cx="76" cy="34" rx="10" ry="9" fill="var(--brown)"/>
+      <ellipse cx="24" cy="35" rx="5" ry="4.5" fill="var(--pink)"/>
+      <ellipse cx="76" cy="35" rx="5" ry="4.5" fill="var(--pink)"/>
+      <circle cx="38" cy="52" r="3" fill="var(--ink)"/>
+      <circle cx="62" cy="52" r="3" fill="var(--ink)"/>
+      <ellipse cx="30" cy="62" rx="5" ry="3.5" fill="var(--pink)" opacity="0.7"/>
+      <ellipse cx="70" cy="62" rx="5" ry="3.5" fill="var(--pink)" opacity="0.7"/>
+      <path d="M42 60 Q50 66 58 60" stroke="var(--ink)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <rect x="30" y="76" width="40" height="10" rx="3" fill="var(--coral)"/>
+      <rect x="34" y="72" width="32" height="8" rx="2" fill="var(--card)"/>
+    </svg>
+    <svg class="login-illust cap-b" viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="50" cy="62" rx="36" ry="28" fill="var(--brown)"/>
+      <ellipse cx="20" cy="36" rx="9" ry="8" fill="var(--brown)"/>
+      <ellipse cx="80" cy="36" rx="9" ry="8" fill="var(--brown)"/>
+      <circle cx="40" cy="56" r="3" fill="var(--ink)"/>
+      <circle cx="60" cy="56" r="3" fill="var(--ink)"/>
+      <ellipse cx="50" cy="66" rx="7" ry="5" fill="var(--pink)"/>
+      <rect x="26" y="70" width="48" height="14" rx="4" fill="var(--yellow)"/>
+      <rect x="46" y="66" width="8" height="22" rx="2" fill="var(--coral)"/>
+    </svg>
+    <svg class="sparkle" style="width:1.2rem;top:0.8rem;right:2.4rem;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+    <svg class="sparkle" style="width:0.8rem;top:3.4rem;right:1rem;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+
+    <span class="badge" id="classBadge">우리 반 독서</span>
+    <h1 class="login-title t-display">독서 기록판</h1>
+    <p class="login-sub" id="loginSub">읽은 책을 체크하고 소감을 남겨보세요</p>
+
+    <div class="role-toggle" role="tablist">
+      <button type="button" id="roleStudentBtn" class="active">학생</button>
+      <button type="button" id="roleTeacherBtn">선생님</button>
+    </div>
+
+    <form id="studentLoginForm">
+      <div class="field">
+        <label for="studentSelect">이름</label>
+        <select id="studentSelect" required></select>
+      </div>
+      <div class="field">
+        <label for="studentPw">비밀번호</label>
+        <input type="password" id="studentPw" autocomplete="off" required>
+      </div>
+      <div class="error-msg" id="studentLoginErr"></div>
+      <button type="submit" class="btn btn-primary">로그인</button>
+    </form>
+
+    <form id="teacherLoginForm" style="display:none;">
+      <div class="field">
+        <label for="teacherPw">선생님 비밀번호</label>
+        <input type="password" id="teacherPw" autocomplete="off" required>
+      </div>
+      <div class="error-msg" id="teacherLoginErr"></div>
+      <button type="submit" class="btn btn-primary">교사 모드로 로그인</button>
+    </form>
+
+    <div class="setup-note" id="setupNote" style="display:none;">
+      아직 학급 설정이 안 되어 있어요.
+      <button type="button" id="goSetupBtn">처음 설정하러 가기</button>
+    </div>
+    <div class="setup-note">
+      데이터를 다른 기기에서 옮겨오셨나요?
+      <button type="button" id="loginImportBtn">백업 파일 불러오기</button>
+    </div>
+    <input type="file" id="loginImportFile" accept="application/json" style="display:none;">
+  </div>
+</div>
+
+<!-- ============ SETUP SCREEN (first run) ============ -->
+<div class="screen" id="setupScreen">
+  <div class="container" style="max-width:38rem;">
+    <div class="section-card">
+      <span class="badge t-display">처음 설정</span>
+      <h2 class="t-display" style="font-size:1.8rem;margin:0.6rem 0 1.2rem;color:var(--brown-dark);">초기 설정</h2>
+      <div class="field">
+        <label for="setupClassName">학급명 (배지에 표시돼요)</label>
+        <input type="text" id="setupClassName" placeholder="예: 3학년 2반 독서반">
+      </div>
+      <div class="field">
+        <label for="setupTeacherPw">선생님 비밀번호</label>
+        <input type="password" id="setupTeacherPw" placeholder="교사 모드 접근용 비밀번호">
+      </div>
+      <h3 style="margin-top:1.4rem;">학생 등록 (6명)</h3>
+      <p class="hint">각 학생의 이름과 비밀번호를 정해주세요. 나중에 교사 모드에서 추가/수정할 수 있어요.</p>
+      <div id="setupStudentList"></div>
+      <button type="button" class="btn btn-secondary btn-sm" id="setupAddStudentBtn" style="margin-top:0.6rem;">+ 학생 추가</button>
+      <div class="error-msg" id="setupErr" style="margin-top:1rem;"></div>
+      <button type="button" class="btn btn-primary" id="setupSubmitBtn" style="margin-top:0.8rem;">설정 완료하고 시작하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STUDENT APP ============ -->
+<div class="screen" id="studentScreen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-emoji">📚</span>
+        <span class="brand-text" id="studentClassName">독서 기록판</span>
+      </div>
+      <div class="who">
+        <span class="who-name" id="studentWhoName"></span>
+        <button class="btn btn-ghost btn-sm" id="studentLogoutBtn">로그아웃</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="progress-card">
+      <div class="progress-num" id="studentProgressNum">0<small>/50</small></div>
+      <div class="progress-track">
+        <div class="progress-label" id="studentProgressLabel">나의 진행 상황</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="studentProgressFill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="filter-row" id="studentFilterRow">
+      <button data-filter="all" class="active">전체</button>
+      <button data-filter="read">읽음</button>
+      <button data-filter="unread">안읽음</button>
+    </div>
+    <div class="book-grid" id="studentBookGrid"></div>
+    <div class="empty-state" id="studentEmptyState" style="display:none;">
+      <span class="emoji">📖</span>
+      아직 등록된 책이 없어요. 선생님께 책 등록을 요청해보세요!
+    </div>
+  </div>
+</div>
+
+<!-- ============ BOOK DETAIL MODAL ============ -->
+<div class="modal-backdrop" id="bookModalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-cover" id="modalCover"></div>
+      <div>
+        <div class="modal-title" id="modalTitle"></div>
+      </div>
+      <button class="modal-close" id="modalCloseBtn" aria-label="닫기">✕</button>
+    </div>
+    <div class="check-row">
+      <label class="switch">
+        <input type="checkbox" id="modalReadToggle">
+        <span class="track"><span class="knob"></span></span>
+      </label>
+      <label for="modalReadToggle" id="modalReadLabel">읽었어요</label>
+    </div>
+    <div class="field">
+      <label for="modalReviewInput">한 줄 소감 (선택)</label>
+      <textarea id="modalReviewInput" maxlength="120" placeholder="이 책에 대한 생각을 짧게 남겨보세요"></textarea>
+      <div class="char-count"><span id="modalReviewCount">0</span>/120</div>
+    </div>
+    <button class="btn btn-primary" id="modalSaveBtn">저장하기</button>
+    <div class="friend-reviews">
+      <h4 class="t-display">친구들의 소감</h4>
+      <div id="friendReviewsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TEACHER APP ============ -->
+<div class="screen" id="teacherScreen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-emoji">🧑‍🏫</span>
+        <span class="brand-text t-display">교사 모드</span>
+      </div>
+      <div class="who">
+        <span class="who-name" id="teacherClassLabel"></span>
+        <button class="btn btn-ghost btn-sm" id="teacherLogoutBtn">로그아웃</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="stat-mini" id="teacherStats"></div>
+    <div class="tabs">
+      <button data-tab="books" class="active">도서 관리</button>
+      <button data-tab="students">학생 계정 관리</button>
+      <button data-tab="progress">전체 현황</button>
+      <button data-tab="backup">데이터 백업</button>
+    </div>
+
+    <div class="panel active" id="panel-books">
+      <div class="section-card">
+        <h3>책 추가하기</h3>
+        <div class="form-row">
+          <div class="field">
+            <label for="newBookTitle">책 제목</label>
+            <input type="text" id="newBookTitle" placeholder="예: 아기 돼지 삼형제">
+          </div>
+          <div class="file-drop">
+            <div class="preview" id="newBookPreview"><span>🖼️</span></div>
+            <input type="file" id="newBookFile" accept="image/*">
+          </div>
+          <button class="btn btn-primary" id="addBookBtn" style="min-width:6rem;">추가</button>
+        </div>
+      </div>
+      <div class="section-card">
+        <h3>도서 목록 (<span id="bookCountLabel">0</span>권)</h3>
+        <div class="list-scroll">
+          <table class="data-table">
+            <thead><tr><th></th><th>제목</th><th></th></tr></thead>
+            <tbody id="bookTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-students">
+      <div class="section-card">
+        <h3>학생 추가하기</h3>
+        <div class="form-row">
+          <div class="field"><label for="newStudentName">이름</label><input type="text" id="newStudentName" placeholder="이름"></div>
+          <div class="field"><label for="newStudentPw">비밀번호</label><input type="text" id="newStudentPw" placeholder="비밀번호"></div>
+          <button class="btn btn-primary" id="addStudentBtn" style="min-width:6rem;">추가</button>
+        </div>
+      </div>
+      <div class="section-card">
+        <h3>학생 목록</h3>
+        <div id="studentTableWrap"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-progress">
+      <div class="section-card">
+        <h3>학생별 진행 현황</h3>
+        <div class="list-scroll">
+          <table class="data-table">
+            <thead><tr><th>이름</th><th>진행률</th><th></th></tr></thead>
+            <tbody id="progressTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-backup">
+      <div class="section-card">
+        <h3>데이터 백업</h3>
+        <p class="hint">이 기기(브라우저)에 저장된 모든 기록(도서 목록, 학생 계정, 읽음 기록, 소감)을 하나의 파일로 저장하거나, 백업 파일에서 복원할 수 있어요. 기기를 바꾸거나 브라우저 데이터가 삭제될 경우를 대비해 정기적으로 백업하는 것을 추천해요.</p>
+        <div class="backup-actions">
+          <button class="btn btn-secondary" id="exportBackupBtn">⬇ 백업 파일 내려받기</button>
+          <button class="btn btn-secondary" id="importBackupBtn">⬆ 백업 파일 불러오기</button>
+          <input type="file" id="importBackupFile" accept="application/json" style="display:none;">
+        </div>
+      </div>
+      <div class="section-card">
+        <h3>학급 설정</h3>
+        <div class="field"><label for="editClassName">학급명</label><input type="text" id="editClassName"></div>
+        <div class="field"><label for="editTeacherPw">선생님 비밀번호</label><input type="text" id="editTeacherPw"></div>
+        <button class="btn btn-primary btn-sm" id="saveClassSettingsBtn">저장</button>
+      </div>
+      <div class="section-card">
+        <h3>초기화</h3>
+        <p class="hint">이 기기의 모든 독서 기록판 데이터를 삭제하고 처음부터 다시 설정합니다. 되돌릴 수 없으니 백업 후 진행하세요.</p>
+        <button class="btn btn-danger btn-sm" id="resetAllBtn">전체 데이터 초기화</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var STORAGE_KEY = "readingTrackerData_v1";
+  var state = null;
+  var currentUser = null; // { type:'student'|'teacher', id }
+  var currentFilter = "all";
+  var openBookId = null;
+
+  function uid(prefix){ return prefix + "_" + Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function save(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+  function showScreen(id){
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+    document.getElementById(id).classList.add("active");
+  }
+
+  function emptyState(){
+    return {
+      className:"",
+      teacherPassword:"",
+      students:[],
+      books:[],
+      records:{}
+    };
+  }
+
+  function ensureRecord(studentId, bookId){
+    if(!state.records[studentId]) state.records[studentId] = {};
+    if(!state.records[studentId][bookId]) state.records[studentId][bookId] = { read:false, review:"", updatedAt:0 };
+    return state.records[studentId][bookId];
+  }
+
+  function progressFor(studentId){
+    var total = state.books.length;
+    var recs = state.records[studentId] || {};
+    var read = 0;
+    state.books.forEach(function(b){ if(recs[b.id] && recs[b.id].read) read++; });
+    return { read: read, total: total, pct: total ? Math.round(read/total*100) : 0 };
+  }
+
+  /* ---------------- Init / Login ---------------- */
+
+  function init(){
+    state = load();
+    if(!state || !state.className){
+      renderSetupDefaults();
+      showScreen("loginScreen");
+      document.getElementById("setupNote").style.display = "block";
+      document.getElementById("studentLoginForm").style.display = "none";
+      document.getElementById("teacherLoginForm").style.display = "none";
+      document.querySelector(".role-toggle").style.display = "none";
+    } else {
+      populateLoginScreen();
+      showScreen("loginScreen");
+    }
+    bindStaticEvents();
+  }
+
+  function populateLoginScreen(){
+    document.getElementById("classBadge").textContent = state.className || "우리 반 독서";
+    var sel = document.getElementById("studentSelect");
+    sel.innerHTML = "";
+    state.students.forEach(function(s){
+      var o = document.createElement("option");
+      o.value = s.id; o.textContent = s.name;
+      sel.appendChild(o);
+    });
+    if(state.students.length === 0){
+      var o = document.createElement("option");
+      o.textContent = "등록된 학생이 없어요"; o.disabled = true;
+      sel.appendChild(o);
+    }
+  }
+
+  function bindStaticEvents(){
+    document.getElementById("roleStudentBtn").onclick = function(){
+      this.classList.add("active");
+      document.getElementById("roleTeacherBtn").classList.remove("active");
+      document.getElementById("studentLoginForm").style.display = "block";
+      document.getElementById("teacherLoginForm").style.display = "none";
+    };
+    document.getElementById("roleTeacherBtn").onclick = function(){
+      this.classList.add("active");
+      document.getElementById("roleStudentBtn").classList.remove("active");
+      document.getElementById("teacherLoginForm").style.display = "block";
+      document.getElementById("studentLoginForm").style.display = "none";
+    };
+    document.getElementById("goSetupBtn").onclick = function(){ showScreen("setupScreen"); };
+
+    document.getElementById("studentLoginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var id = document.getElementById("studentSelect").value;
+      var pw = document.getElementById("studentPw").value;
+      var st = state.students.find(function(s){ return s.id === id; });
+      var errEl = document.getElementById("studentLoginErr");
+      if(!st || st.password !== pw){
+        errEl.textContent = "이름 또는 비밀번호가 올바르지 않아요.";
+        return;
+      }
+      errEl.textContent = "";
+      document.getElementById("studentPw").value = "";
+      currentUser = { type:"student", id: st.id };
+      enterStudentApp();
+    });
+
+    document.getElementById("teacherLoginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var pw = document.getElementById("teacherPw").value;
+      var errEl = document.getElementById("teacherLoginErr");
+      if(pw !== state.teacherPassword){
+        errEl.textContent = "비밀번호가 올바르지 않아요.";
+        return;
+      }
+      errEl.textContent = "";
+      document.getElementById("teacherPw").value = "";
+      currentUser = { type:"teacher" };
+      enterTeacherApp();
+    });
+
+    document.getElementById("studentLogoutBtn").onclick = doLogout;
+    document.getElementById("teacherLogoutBtn").onclick = doLogout;
+
+    document.getElementById("loginImportBtn").onclick = function(){
+      document.getElementById("loginImportFile").click();
+    };
+    document.getElementById("loginImportFile").addEventListener("change", function(e){
+      handleImportFile(e.target.files[0], function(){
+        populateLoginScreen();
+        document.getElementById("setupNote").style.display = "none";
+        document.querySelector(".role-toggle").style.display = "flex";
+        document.getElementById("studentLoginForm").style.display = "block";
+      });
+    });
+
+    // setup screen
+    document.getElementById("setupAddStudentBtn").onclick = function(){ addSetupStudentRow("", ""); };
+    for(var i=0;i<6;i++) addSetupStudentRow("", "");
+    document.getElementById("setupSubmitBtn").onclick = submitSetup;
+
+    // student filter
+    document.getElementById("studentFilterRow").addEventListener("click", function(e){
+      var btn = e.target.closest("button[data-filter]");
+      if(!btn) return;
+      currentFilter = btn.getAttribute("data-filter");
+      document.querySelectorAll("#studentFilterRow button").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      renderStudentBooks();
+    });
+
+    // modal
+    document.getElementById("modalCloseBtn").onclick = closeBookModal;
+    document.getElementById("bookModalBackdrop").addEventListener("click", function(e){
+      if(e.target === this) closeBookModal();
+    });
+    document.getElementById("modalReviewInput").addEventListener("input", function(){
+      document.getElementById("modalReviewCount").textContent = this.value.length;
+    });
+    document.getElementById("modalSaveBtn").onclick = saveBookRecord;
+
+    // teacher tabs
+    document.querySelector(".tabs").addEventListener("click", function(e){
+      var btn = e.target.closest("button[data-tab]");
+      if(!btn) return;
+      document.querySelectorAll(".tabs button").forEach(function(b){ b.classList.remove("active"); });
+      document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById("panel-" + btn.getAttribute("data-tab")).classList.add("active");
+      if(btn.getAttribute("data-tab") === "progress") renderProgressTable();
+    });
+
+    document.getElementById("newBookFile").addEventListener("change", function(e){
+      var f = e.target.files[0];
+      if(!f) return;
+      resizeImageToDataUrl(f, 480, 0.75, function(dataUrl){
+        document.getElementById("newBookPreview").innerHTML = "<img src='" + dataUrl + "'>";
+        document.getElementById("newBookFile").dataset.preview = dataUrl;
+      });
+    });
+    document.getElementById("addBookBtn").onclick = addBook;
+    document.getElementById("addStudentBtn").onclick = addStudentFromTeacher;
+
+    document.getElementById("exportBackupBtn").onclick = exportBackup;
+    document.getElementById("importBackupBtn").onclick = function(){ document.getElementById("importBackupFile").click(); };
+    document.getElementById("importBackupFile").addEventListener("change", function(e){
+      handleImportFile(e.target.files[0], function(){
+        toast("백업을 불러왔어요");
+        renderTeacherAll();
+      });
+    });
+    document.getElementById("saveClassSettingsBtn").onclick = function(){
+      state.className = document.getElementById("editClassName").value.trim() || state.className;
+      var newPw = document.getElementById("editTeacherPw").value;
+      if(newPw) state.teacherPassword = newPw;
+      save();
+      toast("저장했어요");
+      renderTeacherAll();
+    };
+    document.getElementById("resetAllBtn").onclick = function(){
+      if(!confirm("정말로 모든 데이터를 삭제할까요? 이 작업은 되돌릴 수 없습니다.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    };
+  }
+
+  function doLogout(){
+    currentUser = null;
+    openBookId = null;
+    document.getElementById("studentPw").value = "";
+    document.getElementById("teacherPw").value = "";
+    document.getElementById("studentLoginErr").textContent = "";
+    document.getElementById("teacherLoginErr").textContent = "";
+    populateLoginScreen();
+    showScreen("loginScreen");
+  }
+
+  /* ---------------- Setup ---------------- */
+
+  function addSetupStudentRow(name, pw){
+    var wrap = document.getElementById("setupStudentList");
+    var row = document.createElement("div");
+    row.className = "form-row";
+    row.style.marginBottom = "0.6rem";
+    row.innerHTML =
+      "<div class='field'><input type='text' class='setup-s-name' placeholder='학생 이름' value='" + escapeAttr(name) + "'></div>" +
+      "<div class='field'><input type='text' class='setup-s-pw' placeholder='비밀번호' value='" + escapeAttr(pw) + "'></div>" +
+      "<button type='button' class='btn btn-ghost btn-sm remove-row'>삭제</button>";
+    row.querySelector(".remove-row").onclick = function(){ row.remove(); };
+    wrap.appendChild(row);
+  }
+
+  function escapeAttr(s){ return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+  function escapeHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function submitSetup(){
+    var className = document.getElementById("setupClassName").value.trim();
+    var teacherPw = document.getElementById("setupTeacherPw").value.trim();
+    var errEl = document.getElementById("setupErr");
+    var rows = document.querySelectorAll("#setupStudentList .form-row");
+    var students = [];
+    rows.forEach(function(r){
+      var name = r.querySelector(".setup-s-name").value.trim();
+      var pw = r.querySelector(".setup-s-pw").value.trim();
+      if(name && pw) students.push({ id: uid("stu"), name: name, password: pw });
+    });
+    if(!className){ errEl.textContent = "학급명을 입력해주세요."; return; }
+    if(!teacherPw){ errEl.textContent = "선생님 비밀번호를 입력해주세요."; return; }
+    if(students.length === 0){ errEl.textContent = "학생을 한 명 이상 등록해주세요."; return; }
+    errEl.textContent = "";
+    state = emptyState();
+    state.className = className;
+    state.teacherPassword = teacherPw;
+    state.students = students;
+    save();
+    populateLoginScreen();
+    document.getElementById("setupNote").style.display = "none";
+    document.querySelector(".role-toggle").style.display = "flex";
+    document.getElementById("studentLoginForm").style.display = "block";
+    showScreen("loginScreen");
+    toast("설정이 완료됐어요! 이제 로그인해보세요.");
+  }
+
+  function renderSetupDefaults(){
+    // nothing extra needed; rows added in bindStaticEvents
+  }
+
+  /* ---------------- Image resize ---------------- */
+
+  function resizeImageToDataUrl(file, maxW, quality, cb){
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var img = new Image();
+      img.onload = function(){
+        var scale = Math.min(1, maxW / img.width);
+        var w = Math.round(img.width * scale);
+        var h = Math.round(img.height * scale);
+        var canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        cb(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ---------------- Student app ---------------- */
+
+  function enterStudentApp(){
+    document.getElementById("studentClassName").textContent = state.className;
+    document.getElementById("studentWhoName").textContent =
+      state.students.find(function(s){ return s.id === currentUser.id; }).name + " 님";
+    currentFilter = "all";
+    document.querySelectorAll("#studentFilterRow button").forEach(function(b){ b.classList.remove("active"); });
+    document.querySelector("#studentFilterRow button[data-filter='all']").classList.add("active");
+    renderStudentBooks();
+    showScreen("studentScreen");
+  }
+
+  function renderStudentBooks(){
+    var prog = progressFor(currentUser.id);
+    document.getElementById("studentProgressNum").innerHTML = prog.read + "<small>/" + prog.total + "</small>";
+    document.getElementById("studentProgressLabel").textContent = "나의 진행 상황 · " + prog.pct + "%";
+    document.getElementById("studentProgressFill").style.width = prog.pct + "%";
+
+    var grid = document.getElementById("studentBookGrid");
+    grid.innerHTML = "";
+    var recs = state.records[currentUser.id] || {};
+    var list = state.books.filter(function(b){
+      var isRead = recs[b.id] && recs[b.id].read;
+      if(currentFilter === "read") return isRead;
+      if(currentFilter === "unread") return !isRead;
+      return true;
+    });
+    document.getElementById("studentEmptyState").style.display = state.books.length === 0 ? "block" : "none";
+    list.forEach(function(b){
+      var isRead = recs[b.id] && recs[b.id].read;
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "book-card";
+      card.innerHTML =
+        "<div class='book-cover'>" + (b.cover ? "<img src='"+b.cover+"' alt=''>" : "<span class='ph'>📕</span>") + "</div>" +
+        "<div class='book-title'>" + escapeHtml(b.title) + "</div>" +
+        (isRead ? "<div class='read-check'>✔</div>" : "");
+      card.onclick = function(){ openBookModal(b.id); };
+      grid.appendChild(card);
+    });
+  }
+
+  function openBookModal(bookId){
+    openBookId = bookId;
+    var book = state.books.find(function(b){ return b.id === bookId; });
+    var rec = ensureRecord(currentUser.id, bookId);
+    document.getElementById("modalTitle").textContent = book.title;
+    document.getElementById("modalCover").innerHTML = book.cover ? "<img src='"+book.cover+"'>" : "<span class='ph' style='font-size:1.6rem'>📕</span>";
+    document.getElementById("modalReadToggle").checked = !!rec.read;
+    document.getElementById("modalReviewInput").value = rec.review || "";
+    document.getElementById("modalReviewCount").textContent = (rec.review || "").length;
+    renderFriendReviews(bookId);
+    document.getElementById("bookModalBackdrop").classList.add("active");
+  }
+  function closeBookModal(){
+    document.getElementById("bookModalBackdrop").classList.remove("active");
+    openBookId = null;
+  }
+  function saveBookRecord(){
+    var rec = ensureRecord(currentUser.id, openBookId);
+    rec.read = document.getElementById("modalReadToggle").checked;
+    rec.review = document.getElementById("modalReviewInput").value.trim();
+    rec.updatedAt = Date.now();
+    save();
+    renderFriendReviews(openBookId);
+    renderStudentBooks();
+    toast("저장했어요");
+  }
+
+  function renderFriendReviews(bookId){
+    var wrap = document.getElementById("friendReviewsList");
+    var items = [];
+    state.students.forEach(function(s){
+      var r = state.records[s.id] && state.records[s.id][bookId];
+      if(r && r.review){
+        items.push({ name: s.name, text: r.review, mine: s.id === currentUser.id });
+      }
+    });
+    if(items.length === 0){
+      wrap.innerHTML = "<div class='no-reviews'>아직 소감을 남긴 친구가 없어요.</div>";
+      return;
+    }
+    wrap.innerHTML = items.map(function(it){
+      return "<div class='review-item'>" +
+        "<div class='review-avatar'>" + escapeHtml(it.name.slice(0,1)) + "</div>" +
+        "<div class='review-body'><div class='rname'>" + escapeHtml(it.name) + (it.mine ? " (나)" : "") + "</div>" +
+        "<div class='rtext'>" + escapeHtml(it.text) + "</div></div></div>";
+    }).join("");
+  }
+
+  /* ---------------- Teacher app ---------------- */
+
+  function enterTeacherApp(){
+    document.getElementById("teacherClassLabel").textContent = state.className;
+    document.getElementById("editClassName").value = state.className;
+    document.getElementById("editTeacherPw").value = "";
+    renderTeacherAll();
+    showScreen("teacherScreen");
+  }
+
+  function renderTeacherAll(){
+    renderTeacherStats();
+    renderBookTable();
+    renderStudentTable();
+    renderProgressTable();
+    document.getElementById("teacherClassLabel").textContent = state.className;
+  }
+
+  function renderTeacherStats(){
+    var totalBooks = state.books.length;
+    var totalStudents = state.students.length;
+    var totalReadEvents = 0, totalReviews = 0;
+    state.students.forEach(function(s){
+      var recs = state.records[s.id] || {};
+      Object.keys(recs).forEach(function(bid){
+        if(recs[bid].read) totalReadEvents++;
+        if(recs[bid].review) totalReviews++;
+      });
+    });
+    document.getElementById("teacherStats").innerHTML =
+      chip(totalBooks, "등록 도서") + chip(totalStudents, "학생 수") +
+      chip(totalReadEvents, "총 읽음 기록") + chip(totalReviews, "남긴 소감");
+    function chip(n, l){ return "<div class='stat-chip'><div class='n'>" + n + "</div><div class='l'>" + l + "</div></div>"; }
+  }
+
+  function renderBookTable(){
+    document.getElementById("bookCountLabel").textContent = state.books.length;
+    var tb = document.getElementById("bookTableBody");
+    tb.innerHTML = "";
+    state.books.forEach(function(b){
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + (b.cover ? "<img class='book-row-thumb' src='"+b.cover+"'>" : "<div class='book-row-thumb'></div>") + "</td>" +
+        "<td>" + escapeHtml(b.title) + "</td>" +
+        "<td class='row-actions'><button class='btn btn-ghost btn-sm edit-book'>수정</button><button class='btn btn-danger btn-sm del-book'>삭제</button></td>";
+      tr.querySelector(".del-book").onclick = function(){
+        if(!confirm("'" + b.title + "' 책을 목록에서 삭제할까요?")) return;
+        state.books = state.books.filter(function(x){ return x.id !== b.id; });
+        save(); renderTeacherAll();
+      };
+      tr.querySelector(".edit-book").onclick = function(){
+        var newTitle = prompt("책 제목 수정", b.title);
+        if(newTitle === null) return;
+        newTitle = newTitle.trim();
+        if(newTitle) b.title = newTitle;
+        save(); renderTeacherAll();
+      };
+      tb.appendChild(tr);
+    });
+  }
+
+  function addBook(){
+    var titleEl = document.getElementById("newBookTitle");
+    var title = titleEl.value.trim();
+    if(!title){ toast("책 제목을 입력해주세요"); return; }
+    var cover = document.getElementById("newBookFile").dataset.preview || "";
+    state.books.push({ id: uid("bk"), title: title, cover: cover });
+    save();
+    titleEl.value = "";
+    document.getElementById("newBookFile").value = "";
+    delete document.getElementById("newBookFile").dataset.preview;
+    document.getElementById("newBookPreview").innerHTML = "<span>🖼️</span>";
+    renderTeacherAll();
+    toast("책을 추가했어요");
+  }
+
+  function renderStudentTable(){
+    var wrap = document.getElementById("studentTableWrap");
+    if(state.students.length === 0){
+      wrap.innerHTML = "<p class='hint'>등록된 학생이 없어요.</p>";
+      return;
+    }
+    var html = "";
+    state.students.forEach(function(s){
+      html += "<div class='list-item-inline'>" +
+        "<div class='grow'><div class='name'>" + escapeHtml(s.name) + "</div><div class='hint' style='margin-top:0'>비밀번호: " + escapeHtml(s.password) + "</div></div>" +
+        "<button class='btn btn-ghost btn-sm' data-act='edit' data-id='" + s.id + "'>수정</button>" +
+        "<button class='btn btn-danger btn-sm' data-act='del' data-id='" + s.id + "'>삭제</button>" +
+        "</div>";
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll("button[data-act='del']").forEach(function(btn){
+      btn.onclick = function(){
+        var s = state.students.find(function(x){ return x.id === btn.dataset.id; });
+        if(!confirm(s.name + " 학생 계정을 삭제할까요? 기록도 함께 삭제됩니다.")) return;
+        state.students = state.students.filter(function(x){ return x.id !== s.id; });
+        delete state.records[s.id];
+        save(); renderTeacherAll();
+      };
+    });
+    wrap.querySelectorAll("button[data-act='edit']").forEach(function(btn){
+      btn.onclick = function(){
+        var s = state.students.find(function(x){ return x.id === btn.dataset.id; });
+        var newName = prompt("학생 이름 수정", s.name);
+        if(newName === null) return;
+        var newPw = prompt("비밀번호 수정", s.password);
+        if(newPw === null) return;
+        if(newName.trim()) s.name = newName.trim();
+        if(newPw.trim()) s.password = newPw.trim();
+        save(); renderTeacherAll();
+      };
+    });
+  }
+
+  function addStudentFromTeacher(){
+    var nameEl = document.getElementById("newStudentName");
+    var pwEl = document.getElementById("newStudentPw");
+    var name = nameEl.value.trim();
+    var pw = pwEl.value.trim();
+    if(!name || !pw){ toast("이름과 비밀번호를 모두 입력해주세요"); return; }
+    state.students.push({ id: uid("stu"), name: name, password: pw });
+    save();
+    nameEl.value = ""; pwEl.value = "";
+    renderTeacherAll();
+    toast("학생을 추가했어요");
+  }
+
+  function renderProgressTable(){
+    var tb = document.getElementById("progressTableBody");
+    tb.innerHTML = "";
+    state.students.forEach(function(s){
+      var p = progressFor(s.id);
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>" + escapeHtml(s.name) + "</td>" +
+        "<td><div class='progress-bar-bg' style='width:8rem;display:inline-block;vertical-align:middle;margin-right:0.5rem;'>" +
+          "<div class='progress-bar-fill' style='width:" + p.pct + "%'></div></div>" +
+          "<span style='font-variant-numeric:tabular-nums;'>" + p.read + "/" + p.total + "</span></td>" +
+        "<td></td>";
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---------------- Backup ---------------- */
+
+  function exportBackup(){
+    var json = JSON.stringify(state, null, 2);
+    var filename = "독서기록판_백업_" + new Date().toISOString().slice(0,10) + ".json";
+    if(window.claude && window.claude.downloads && window.claude.downloads.save){
+      window.claude.downloads.save({ filename: filename, data: json }).then(function(){
+        toast("백업 파일을 저장했어요");
+      }).catch(function(){
+        toast("백업 저장이 취소됐어요");
+      });
+    } else {
+      var blob = new Blob([json], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast("백업 파일을 저장했어요");
+    }
+  }
+
+  function handleImportFile(file, onDone){
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        var data = JSON.parse(ev.target.result);
+        if(!data || !Array.isArray(data.students) || !Array.isArray(data.books)){
+          toast("올바른 백업 파일이 아니에요");
+          return;
+        }
+        state = data;
+        if(!state.records) state.records = {};
+        save();
+        onDone && onDone();
+      }catch(e){
+        toast("백업 파일을 읽을 수 없어요");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  init();
+})();
+</script>
